@@ -5,10 +5,13 @@ import com.example.patterns_banking.factory.AccountFactoryProvider;
 import com.example.patterns_banking.models.Account;
 import com.example.patterns_banking.repositories.IAccountRepository;
 import com.example.patterns_banking.repositories.ICustomerRepository;
+import com.example.patterns_banking.services.commands.ConsultAllAccounts;
 import com.example.patterns_banking.services.commands.CreateAccountCommand;
 import com.example.patterns_banking.services.commands.DepositCommand;
 import com.example.patterns_banking.services.commands.ICommand;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 public class AccountService {
@@ -24,6 +27,11 @@ public class AccountService {
 
   public Account createAccount(AccountDTO accountDTO) {
     ICommand<Account> command = new CreateAccountCommand(accountRepository, customerRepository, accountFactoryProvider, accountDTO);
+    return command.execute();
+  }
+
+  public List<Account> queryAllAccounts() {
+    ICommand<List<Account>> command = new ConsultAllAccounts(accountRepository);
     return command.execute();
   }
 
